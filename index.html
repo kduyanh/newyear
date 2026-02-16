@@ -22,29 +22,35 @@
   h1 {
     font-size: 3rem;
     margin-bottom: 1rem;
-    color: #B91C1C; /* đỏ Tết */
+    color: #B91C1C;
   }
 
   #countdown {
     font-size: 2.2rem;
     letter-spacing: 1px;
-    color: #B91C1C; /* đỏ Tết */
+    color: #B91C1C;
   }
 
   .tet-image {
-    margin-top: 3rem;
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .tet-image img {
-    width: 320px;
-    max-width: 80vw;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
   }
 
   canvas {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 0;
   }
 
   .hidden {
@@ -58,34 +64,26 @@
 <canvas id="fireworks"></canvas>
 
 <div class="container">
-  <!-- 👇 THÊM ID Ở ĐÂY -->
   <h1 id="title">🧧 Countdown to Lunar New Year</h1>
-
   <div id="countdown"></div>
+</div>
 
-  <!-- TẾT IMAGE -->
-  <div class="tet-image hidden" id="tetImage">
-    <img src="tet.png" alt="Lunar New Year Decoration">
-  </div>
+<div class="tet-image hidden" id="tetImage">
+  <img src="tet.png" alt="Lunar New Year Decoration">
 </div>
 
 <script>
-/* ====== SET TẾT DATE HERE ======
-   Lunar New Year 2026:
-   Feb 17, 2026 (Vietnam time)
-================================ */
 const tetDate = new Date(Date.now() + 10 * 1000); // demo 10s
 const countdownEl = document.getElementById("countdown");
 const tetImage = document.getElementById("tetImage");
-const titleEl = document.getElementById("title"); // 👈 THÊM DÒNG NÀY
+const titleEl = document.getElementById("title");
 
-/* ====== COUNTDOWN ====== */
 function updateCountdown() {
   const now = new Date();
   const diff = tetDate - now;
 
   if (diff <= 0) {
-    titleEl.style.display = "none"; // 👈 ẨN TITLE
+    titleEl.style.display = "none";
     countdownEl.textContent = "🎉 Chúc mừng năm mới! 🎉";
     tetImage.classList.remove("hidden");
     startFireworks();
