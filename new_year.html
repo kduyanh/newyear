@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<title>Đếm ngược Tết Nguyên Đán 🇻🇳</title>
+
+<style>
+  body {
+    margin: 0;
+    background: radial-gradient(circle, #7f1d1d, #450a0a);
+    color: #fde68a;
+    font-family: system-ui, sans-serif;
+    overflow: hidden;
+  }
+
+  .container {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    margin-top: 12vh;
+  }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  #countdown {
+    font-size: 2.2rem;
+    letter-spacing: 1px;
+  }
+
+  .tet-items {
+    margin-top: 3rem;
+    font-size: 4rem;
+  }
+
+  .tet-items span {
+    margin: 0 1rem;
+  }
+
+  canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
+</head>
+
+<body>
+
+<canvas id="fireworks"></canvas>
+
+<div class="container">
+  <h1>🧧 Đếm ngược đến Tết Nguyên Đán</h1>
+  <div id="countdown"></div>
+
+  <div class="tet-items hidden" id="tetItems">
+    <span>🎆</span>
+    <span>🍃</span>
+    <span>🌸</span>
+    <span>🧧</span>
+  </div>
+</div>
+
+<script>
+/* ====== SET TẾT DATE HERE ======
+   Tết 2026: 17 Feb 2026 (Vietnam time)
+================================ */
+const tetDate = new Date("2026-02-17T00:00:00+07:00");
+const countdownEl = document.getElementById("countdown");
+const tetItems = document.getElementById("tetItems");
+
+/* ====== COUNTDOWN ====== */
+function updateCountdown() {
+  const now = new Date();
+  const diff = tetDate - now;
+
+  if (diff <= 0) {
+    countdownEl.textContent = "🎉 Chúc Mừng Năm Mới!";
+    tetItems.classList.remove("hidden");
+    startFireworks();
+    clearInterval(timer);
+    return;
+  }
+
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor(diff / 3600000) % 24;
+  const m = Math.floor(diff / 60000) % 60;
+  const s = Math.floor(diff / 1000) % 60;
+
+  countdownEl.textContent =
+    `${d} ngày ${h} giờ ${m} phút ${s} giây`;
+}
+
+const timer = setInterval(updateCountdown, 1000);
+updateCountdown();
+
+/* ====== FIREWORKS ====== */
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resize);
+resize();
+
+let particles = [];
+
+function createFirework() {
+  const x = Math.random() * canvas.width;
+  const y = Math.random() * canvas.height * 0.5;
+  const colors = ["#fde68a", "#f97316", "#ef4444", "#22c55e"];
+
+  for (let i = 0; i < 80; i++) {
+    particles.push({
+      x,
+      y,
+      vx: (Math.random() - 0.5) * 6,
+      vy: (Math.random() - 0.5) * 6,
+      life: 100,
+      color: colors[Math.floor(Math.random() * colors.length)]
+    });
+  }
+}
+
+function startFireworks() {
+  setInterval(createFirework, 800);
+  animate();
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach((p, i) => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.life--;
+
+    ctx.fillStyle = p.color;
+    ctx.fillRect(p.x, p.y, 3, 3);
+
+    if (p.life <= 0) particles.splice(i, 1);
+  });
+  requestAnimationFrame(animate);
+}
+</script>
+
+</body>
+</html>
