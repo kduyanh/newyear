@@ -81,13 +81,15 @@ function updateCountdown() {
   const now = new Date();
   const diff = tetDate - now;
 
-  if (diff <= 0) {
-    countdownEl.textContent = "🎉 Chúc mừng năm mới! 🎉";
-    tetImage.classList.remove("hidden");
-    startFireworks();
-    clearInterval(timer);
-    return;
-  }
+if (diff <= 0) {
+  titleEl.style.display = "none"; // 👈 XÓA TITLE
+  countdownEl.textContent = "🎉 Chúc mừng năm mới! 🎉";
+  tetImage.classList.remove("hidden");
+  startFireworks();
+  clearInterval(timer);
+  return;
+}
+
 
   const days = Math.floor(diff / 86400000);
   const hours = Math.floor(diff / 3600000) % 24;
@@ -154,3 +156,4 @@ function animate() {
 
 </body>
 </html>
+
