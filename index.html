@@ -2,13 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title> Lunar New Year Countdown 🇻🇳</title>
+<title>Lunar New Year Countdown 🇻🇳</title>
 
 <style>
   body {
     margin: 0;
     background: radial-gradient(circle, #FADADD, #F6C1CC);
-    color: #fde68a;
     font-family: system-ui, sans-serif;
     overflow: hidden;
   }
@@ -23,20 +22,22 @@
   h1 {
     font-size: 3rem;
     margin-bottom: 1rem;
+    color: #B91C1C; /* đỏ Tết */
   }
 
   #countdown {
     font-size: 2.2rem;
     letter-spacing: 1px;
+    color: #B91C1C; /* đỏ Tết */
   }
 
-  .tet-items {
+  .tet-image {
     margin-top: 3rem;
-    font-size: 4rem;
   }
 
-  .tet-items span {
-    margin: 0 1rem;
+  .tet-image img {
+    width: 320px;
+    max-width: 80vw;
   }
 
   canvas {
@@ -57,25 +58,23 @@
 <canvas id="fireworks"></canvas>
 
 <div class="container">
-  <h1>🧧 Countdown to  Lunar New Year</h1>
+  <h1>🧧 Countdown to Lunar New Year</h1>
   <div id="countdown"></div>
 
-  <div class="tet-items hidden" id="tetItems">
-    <span>🎆</span>
-    <span>🍃</span>
-    <span>🌸</span>
-    <span>🧧</span>
+  <!-- TẾT IMAGE -->
+  <div class="tet-image hidden" id="tetImage">
+    <img src="tet.png" alt="Lunar New Year Decoration">
   </div>
 </div>
 
 <script>
 /* ====== SET TẾT DATE HERE ======
-    Lunar New Year 2026:
+   Lunar New Year 2026:
    Feb 17, 2026 (Vietnam time)
 ================================ */
-const tetDate = new Date(Date.now() + 10 * 1000);
+const tetDate = new Date(Date.now() + 10 * 1000); // demo 10s
 const countdownEl = document.getElementById("countdown");
-const tetItems = document.getElementById("tetItems");
+const tetImage = document.getElementById("tetImage");
 
 /* ====== COUNTDOWN ====== */
 function updateCountdown() {
@@ -84,7 +83,7 @@ function updateCountdown() {
 
   if (diff <= 0) {
     countdownEl.textContent = "🎉 Chúc mừng năm mới! 🎉";
-    tetItems.classList.remove("hidden");
+    tetImage.classList.remove("hidden");
     startFireworks();
     clearInterval(timer);
     return;
@@ -155,7 +154,3 @@ function animate() {
 
 </body>
 </html>
-
-
-
-
