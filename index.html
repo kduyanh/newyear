@@ -12,10 +12,11 @@
     overflow: hidden;
   }
 
+  /* SCREEN 1 */
   .container {
     text-align: center;
     position: relative;
-    z-index: 2;
+    z-index: 3;
     margin-top: 12vh;
   }
 
@@ -31,6 +32,7 @@
     color: #B91C1C;
   }
 
+  /* SCREEN 2 */
   .tet-image {
     position: fixed;
     inset: 0;
@@ -48,9 +50,9 @@
 
   canvas {
     position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 0;
+    inset: 0;
+    z-index: 2; /* PHÁO HOA TRÊN ẢNH */
+    pointer-events: none;
   }
 
   .hidden {
@@ -63,29 +65,31 @@
 
 <canvas id="fireworks"></canvas>
 
-<div class="container">
+<!-- SCREEN 1 -->
+<div class="container" id="screen1">
   <h1 id="title">🧧 Countdown to Lunar New Year</h1>
   <div id="countdown"></div>
 </div>
 
+<!-- SCREEN 2 -->
 <div class="tet-image hidden" id="tetImage">
   <img src="tet.png" alt="Lunar New Year Decoration">
 </div>
 
 <script>
+/* ====== COUNTDOWN ====== */
 const tetDate = new Date(Date.now() + 10 * 1000); // demo 10s
 const countdownEl = document.getElementById("countdown");
 const tetImage = document.getElementById("tetImage");
-const titleEl = document.getElementById("title");
+const screen1 = document.getElementById("screen1");
 
 function updateCountdown() {
   const now = new Date();
   const diff = tetDate - now;
 
   if (diff <= 0) {
-    titleEl.style.display = "none";
-    countdownEl.textContent = "🎉 Chúc mừng năm mới! 🎉";
-    tetImage.classList.remove("hidden");
+    screen1.style.display = "none";      // ❌ ẨN TOÀN BỘ SCREEN 1
+    tetImage.classList.remove("hidden"); // ✅ CHỈ HIỆN ẢNH
     startFireworks();
     clearInterval(timer);
     return;
@@ -121,35 +125,40 @@ function createFirework() {
   const y = Math.random() * canvas.height * 0.5;
   const colors = ["#fde68a", "#f97316", "#ef4444", "#22c55e"];
 
-  for (let i = 0; i < 80; i++) {
+  for (let i = 0; i < 90; i++) {
     particles.push({
       x,
       y,
-      vx: (Math.random() - 0.5) * 6,
-      vy: (Math.random() - 0.5) * 6,
-      life: 100,
+      vx: (Math.random() - 0.5) * 7,
+      vy: (Math.random() - 0.5) * 7,
+      life: 120,
       color: colors[Math.floor(Math.random() * colors.length)]
     });
   }
 }
 
 function startFireworks() {
-  setInterval(createFirework, 800);
+  setInterval(createFirework, 700);
   animate();
 }
 
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  particles.forEach((p, i) => {
+
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
     p.x += p.vx;
     p.y += p.vy;
     p.life--;
 
     ctx.fillStyle = p.color;
-    ctx.fillRect(p.x, p.y, 3, 3);
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 2.5, 0, Math.PI * 2);
+    ctx.fill();
 
     if (p.life <= 0) particles.splice(i, 1);
-  });
+  }
+
   requestAnimationFrame(animate);
 }
 </script>
